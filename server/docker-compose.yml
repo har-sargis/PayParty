@@ -4,7 +4,7 @@ services:
   api-gateway:
     build: ./src/api-gateway
     ports:
-      - "3000:3000"
+      - "8080:8080"
 
   authentication:
     build: ./src/services/authentication-service

@@ -6,7 +6,7 @@ import notificationRoutes from './routes/notification';
 import paymentRoutes from './routes/payments';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 8080;
 
 app.use(express.json());
 
@@ -17,6 +17,7 @@ app.use(notificationRoutes);
 app.use(paymentRoutes);
 
 app.get('/', (req, res) => {
+  console.log('hello api gateway !!')
   res.send('API Gateway for SplitBills');
 });
 

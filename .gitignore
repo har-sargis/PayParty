@@ -1,0 +1,27 @@
+# Ignore compiled files and dependencies
+node_modules/
+**/node_modules/
+build/
+dist/
+
+# Ignore log files
+*.log
+
+# Ignore sensitive or private information
+.env
+.env.local
+.env.*.local
+.env.test
+.env.prod
+*.pem
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db
+
+# Ignore any other files or directories you don't want to commit
+/config/local

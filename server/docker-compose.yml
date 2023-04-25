@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  api-gateway:
+    build: ./src/api-gateway
+    ports:
+      - "3000:3000"
+
+  authentication:
+    build: ./src/services/authentication-service
+    ports:
+      - "3001:3001"
+
+  events:
+    build: ./src/services/events-service
+    ports:
+      - "3002:3002"
+
+  expenses:
+    build: ./src/services/expenses-service
+    ports:
+      - "3003:3003"
+
+  notifications:
+    build: ./src/services/notifications-service
+    ports:
+      - "3004:3004"
+
+  payments:
+    build: ./src/services/payments-service
+    ports:
+      - "3005:3005"
+
+  # Add other services here with their respective build paths and port mappings

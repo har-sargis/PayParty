@@ -18,7 +18,10 @@ const bankingIcons2 = [
   { name: 'settings', label: 'Settings' },
 ];
 
-const Menu: React.FC = ({ navigation }) => (
+interface IProps {
+  navigation: any
+}
+const Menu: React.FC<IProps> = ({ navigation }) => (
   <SafeAreaView style={styles.flex}>
     <View style={styles.container}>
       <CloseButton onPress={() => navigation.goBack()} />

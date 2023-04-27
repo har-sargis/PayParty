@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Country } from 'react-native-country-picker-modal';
 
 import CloseButton from '../../components/CloseButton';
 import Keyboard from '../../components/CustomNumberKeyBoard';
 import Countdown from '../../components/CountDown';
 import Fetch from '../../services/Fetch';
-import { AUTH_VC, PHONE_KEY } from '../../config/constants';
+import { AUTH_VC, PHONE_N_KEY, PHONE_C_KEY } from '../../config/constants';
 
 type VerificationResponse = {
   message: string;
@@ -30,9 +31,10 @@ function VerifyCodeScreen({ navigation }: {navigation: any}) {
 
   const verifyCode = useCallback(async () => {
     try {
-      const phoneNumber = await AsyncStorage.getItem(PHONE_KEY);
+      const code = await AsyncStorage.getItem(PHONE_N_KEY);
+      const number = await AsyncStorage.getItem(PHONE_C_KEY);
       const res: VerificationResponse = await Fetch.post(AUTH_VC, {
-        phoneNumber,
+        phoneNumber: `+${code}${number}`,
         code,
       });
       if (res.verified) {

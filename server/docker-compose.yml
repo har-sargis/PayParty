@@ -5,30 +5,41 @@ services:
     build: ./src/api-gateway
     ports:
       - "8080:8080"
+    env_file:
+      - ./src/api-gateway/.env
 
   authentication:
     build: ./src/services/authentication-service
     ports:
       - "3001:3001"
+    env_file:
+      - ./src/services/authentication-service/.env
 
   events:
     build: ./src/services/events-service
     ports:
       - "3002:3002"
+    env_file:
+      - ./src/services/events-service/.env
 
   expenses:
     build: ./src/services/expenses-service
     ports:
       - "3003:3003"
+    env_file:
+      - ./src/services/expenses-service/.env
 
   notifications:
     build: ./src/services/notifications-service
     ports:
       - "3004:3004"
-
+    env_file:
+      - ./src/services/notifications-service/.env
+      
   payments:
     build: ./src/services/payments-service
     ports:
       - "3005:3005"
-
+    env_file:
+      - ./src/services/payments-service/.env
   # Add other services here with their respective build paths and port mappings

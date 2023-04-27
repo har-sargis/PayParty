@@ -22,6 +22,9 @@ module.exports = {
     "react/react-in-jsx-scope": "off"
   },
   "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    },
     "react": {
       "version": "detect"
     }

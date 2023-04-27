@@ -7,7 +7,7 @@ import Input from '../../components/PhoneNumberInput';
 import CloseButton from '../../components/CloseButton';
 import Button from '../../components/Button';
 import Fetch from '../../services/Fetch';
-import { AUTH_SVC, PHONE_KEY } from '../../config/constants';
+import { AUTH_SVC, PHONE_C_KEY, PHONE_N_KEY } from '../../config/constants';
 
 function SendCodeToNumber({ navigation }: { navigation: any }) {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -20,7 +20,8 @@ function SendCodeToNumber({ navigation }: { navigation: any }) {
       await Fetch.post(AUTH_SVC, {
         phone: number,
       });
-      await AsyncStorage.setItem(PHONE_KEY, number);
+      await AsyncStorage.setItem(PHONE_C_KEY, phoneCode);
+      await AsyncStorage.setItem(PHONE_N_KEY, phoneNumber);
       navigation.navigate('EnterTheCode');
     } catch (e) {
       console.log(e);

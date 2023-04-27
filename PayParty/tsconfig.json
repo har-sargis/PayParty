@@ -2,10 +2,27 @@
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    // "baseUrl": ".",
-    // "paths": {
-      // "@/*": ["src/*"]
-    // },
-    "typeRoots": ["./src/types"]
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@screens/*": [
+        "src/screens/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      // Add more aliases as needed
+    },
+    "typeRoots": [
+      "./types"
+    ]
   },
 }

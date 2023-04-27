@@ -6,4 +6,5 @@ export const AUTH_SVC = `${BASE_URL}/send-verification-code`;
 export const AUTH_VC = `${BASE_URL}/verify-code`;
 export const AUTH_SIGNUP = `${BASE_URL}/signup`;
 
-export const PHONE_KEY = '@phone';
+export const PHONE_N_KEY = '@phoneNumber';
+export const PHONE_C_KEY = '@phoneCode';

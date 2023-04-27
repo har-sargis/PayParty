@@ -1,18 +1,18 @@
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import  {Easing} from 'react-native';
 
-import Start from './screens/Start';
+import Start from './src/screens/Start';
 import {
   SendCodeToNumber,
   EnterTheCode,
   Registration,
-} from './screens/Registration';
-import { Login } from './screens/Login';
-import Home from './screens/Home';
-import ActionMenu from './screens/ActionMenu';
-import Settings from './screens/Settings';
-import Profile from './screens/Profile';
-import Congrats from './screens/Congrats';
+} from './src/screens/Registration';
+import { Login } from './src/screens/Login';
+import Home from './src/screens/Home';
+import ActionMenu from './src/screens/ActionMenu';
+import Settings from './src/screens/Settings';
+import Profile from './src/screens/Profile';
+import Congrats from './src/screens/Congrats';
 
 const config = {
   animation: 'spring',

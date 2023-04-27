@@ -29,7 +29,7 @@ const Balance: React.FC<BalanceProps> = ({ balance = 10000 }) => (
         })}
       </Text>
       <ImageBackground
-        source={require('../../../assets/images/shadow.png')}
+        source={require('../../../../assets/images/shadow.png')}
         resizeMode="cover"
         style={styles.buttonGroup}
       >

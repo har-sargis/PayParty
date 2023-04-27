@@ -4,7 +4,9 @@ import eventsRoutes from './routes/event';
 import expensesRoutes from './routes/expenses';
 import notificationRoutes from './routes/notification';
 import paymentRoutes from './routes/payments';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
 const PORT = 8080;
 

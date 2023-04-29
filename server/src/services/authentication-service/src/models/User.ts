@@ -1,30 +1,51 @@
-import { pool } from '../db';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+  AutoIncrement,
+  Unique,
+  AllowNull,
+  HasMany,
+} from 'sequelize-typescript';
+import { CreditCard } from './CreditCard';
 
-export interface User {
-  id: number;
-  email: string;
-  password: string;
-}
+@Table({
+  tableName: 'users',
+  timestamps: true,
+})
+export class User extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER)
+  id!: number;
 
-export async function createUser(email: string, password: string, name: string, phone: string, birthday: string): Promise<User | null> {
-  try {
-    const result = await pool.query<User>(
-      'INSERT INTO users (email, password, name, phone, birthday) VALUES ($1, $2, $#, $4, $5) RETURNING *',
-      [email, password, name, phone, birthday]
-    );
-    return result.rows[0];
-  } catch (error) {
-    console.error('Error creating user:', error);
-    return null;
-  }
-}
+  @Unique
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  email!: string;
 
-export async function findUserByEmail(email: string): Promise<User | null> {
-  try {
-    const result = await pool.query<User>('SELECT * FROM users WHERE email = $1', [email]);
-    return result.rows[0] || null;
-  } catch (error) {
-    console.error('Error finding user by email:', error);
-    return null;
-  }
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  password!: string;
+
+  @Column(DataType.STRING)
+  firstName!: string;
+
+  @AllowNull(true)
+  @Column(DataType.STRING)
+  lastName?: string | null;
+
+  @Unique
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  phoneNumber!: string;
+
+  @AllowNull(true)
+  @Column(DataType.STRING)
+  country?: string | null;
+
+  @HasMany(() => CreditCard)
+  creditCards!: CreditCard[];
 }

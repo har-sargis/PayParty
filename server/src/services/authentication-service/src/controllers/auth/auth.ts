@@ -1,21 +1,23 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 import twilio from 'twilio';
 
-import { createUser, findUserByEmail, User } from '../models/User';
+import { AuthenticatedRequest } from '../../../types';
+import { User } from '../../models/User';
+
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  storeRefreshToken,
+} from './tokens';
 
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 
-// Generate a secret key
-const secret = crypto.randomBytes(32).toString('base64');
-
 export async function signUp(req: Request, res: Response) {
-  const { email, password, phone, name, birthday } = req.body;
-
+  const { email, password, phoneNumber, firstName } = req.body;
+  console.log(email, password, phoneNumber, firstName);
   // Check if email is already registered
-  const existingUser = await findUserByEmail(email);
+  const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
     return res.status(400).json({ message: 'Email already registered.' });
   }
@@ -24,23 +26,30 @@ export async function signUp(req: Request, res: Response) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Create user in the database
-  const user = await createUser(email, hashedPassword, name, phone, birthday);
+  const user = await User.create({
+    firstName,
+    email,
+    password: hashedPassword,
+    phoneNumber,
+  });
+
   if (!user) {
     return res.status(500).json({ message: 'Error creating user.' });
   }
 
   // Generate JWT
-  const token = jwt.sign({ id: user.id, email: user.email }, secret, { expiresIn: '1h' });
-
-  res.status(201).json({ message: 'User registered successfully.', token });
+  const accessToken = generateAccessToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
+  await storeRefreshToken(user.id, refreshToken, 24 * 60 * 60);
+  res.status(201).json({ message: 'User registered successfully.', accessToken, refreshToken, id: user.id });
 }
 
 export async function logIn(req: Request, res: Response) {
   console.log('logIn', req.body, '???????????????????????????????????')
-  const { email, password } = req.body;
+  const { phoneNumber, password } = req.body;
 
   // Find user by email
-  const user = await findUserByEmail(email);
+  const user = await User.findOne({ where: { phoneNumber } });
   if (!user) {
     return res.status(404).json({ message: 'User not found.' });
   }
@@ -52,9 +61,10 @@ export async function logIn(req: Request, res: Response) {
   }
 
   // Generate JWT
-  const token = jwt.sign({ id: user.id, email: user.email }, secret, { expiresIn: '1h' });
-
-  res.status(200).json({ message: 'User logged in successfully.', token });
+  const accessToken = generateAccessToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
+  await storeRefreshToken(user.id, refreshToken, 24 * 60 * 60);
+  res.status(200).json({ message: 'User logged in successfully.', accessToken, refreshToken, id: user.id });
 }
 
 // Store verification codes in-memory (use Redis or another storage solution in production)
@@ -115,3 +125,29 @@ export async function verifyCode(req: Request, res: Response) {
   // Remove the stored code for the given phone number to prevent reusing it
   verificationCodes.delete(phoneNumber);
 }
+
+export const authMe = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    // Assuming the user ID was added to the request by the authMiddleware
+    const userId = req.userId;
+
+    // Retrieve the user data from the database
+    const user = await User.findByPk(userId);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Send the user data back to the client
+    res.status(200).json({
+      id: user.id,
+      firstName: user.firstName,
+      email: user.email,
+      // Add other user fields as needed
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while processing your request', error });
+  }
+};
+

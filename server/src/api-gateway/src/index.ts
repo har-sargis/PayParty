@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
 
 app.use(express.json());
 
@@ -24,5 +24,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`API Gateway is running on port ${PORT}`);
+  console.log(`API Gateway is running on port ${PORT}!!!!`);
 });

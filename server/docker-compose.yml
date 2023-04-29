@@ -4,7 +4,7 @@ services:
   api-gateway:
     build: ./src/api-gateway
     ports:
-      - "8080:8080"
+      - "3000:3000"
     env_file:
       - ./src/api-gateway/.env
 
@@ -14,6 +14,8 @@ services:
       - "3001:3001"
     env_file:
       - ./src/services/authentication-service/.env
+    depends_on:
+      - postgres
 
   events:
     build: ./src/services/events-service
@@ -35,11 +37,35 @@ services:
       - "3004:3004"
     env_file:
       - ./src/services/notifications-service/.env
-      
+
   payments:
     build: ./src/services/payments-service
     ports:
       - "3005:3005"
     env_file:
       - ./src/services/payments-service/.env
+
+  pgAdmin:
+      image: dpage/pgadmin4:latest
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: root
+      ports:
+        - "82:80"
+      depends_on:
+      - postgres
+
   # Add other services here with their respective build paths and port mappings
+  postgres:
+      image: postgres:15
+      environment:
+        POSTGRES_USER: payparty
+        POSTGRES_PASSWORD: payparty
+        POSTGRES_DB: payparty
+      # ports:
+      #   - "5432:5432"
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

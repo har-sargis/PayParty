@@ -3,6 +3,8 @@ import { createContext, useState, useEffect, ReactNode, useCallback } from 'reac
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { USER_R_T, USER_A_T } from '@config/constants';
 import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from 'App';
+
 
 interface AuthContextValue {
   user: any;
@@ -26,6 +28,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigation = useNavigation();
+  console.log(navigation.navigate);
   const [user, setUser] = useState<any>(null);
   const [userId, setUserId] = useState<string | number | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -45,7 +48,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRefreshToken(refreshToken);
     storeTokens(accessToken, refreshToken);
     setUserId(userId);
-
   };
 
   const logout = useCallback(async () => {
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRefreshToken(null);
     await AsyncStorage.removeItem('accessToken');
     await AsyncStorage.removeItem('refreshToken');
+    // @ts-ignore
     navigation.navigate('Start');
   }, []);
 
@@ -64,6 +67,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (at && rt) {
           setAccessToken(at);
           setRefreshToken(rt);
+          // @ts-ignore
+          navigation.navigate('Home');
         } else {
           logout();
         }

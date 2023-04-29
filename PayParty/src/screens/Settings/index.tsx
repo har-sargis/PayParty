@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { Text } from 'react-native-elements';
 import SIcon from 'react-native-vector-icons/SimpleLineIcons';
@@ -7,16 +7,18 @@ import FIcon from 'react-native-vector-icons/FontAwesome5';
 import EIcon from 'react-native-vector-icons/Entypo';
 import { Switch } from 'react-native-switch';
 
-import CloseButton from '../../components/CloseButton';
-import ScreenHeader from '../../components/ScreenHeader';
-import RouteButton from '../../components/RouteButton';
-import Separator from '../../components/Separator';
+import CloseButton from '@components/CloseButton';
+import ScreenHeader from '@components/ScreenHeader';
+import RouteButton from '@components/RouteButton';
+import Separator from '@components/Separator';
+import { AuthContext } from '@store/AuthContext';
 
 interface IProps {
   navigation: any;
 }
 
 const Settings: React.FC<IProps> = ({ navigation }) => {
+  const { logout } = useContext(AuthContext)
   const [isDark, setIsDark] = useState(false);
 
   return (
@@ -77,6 +79,7 @@ const Settings: React.FC<IProps> = ({ navigation }) => {
               icon={<FIcon name="power-off" color="#DD5757" size={20} />}
               title="Logout"
               hideChevron
+              onPress={logout}
             />
           </View>
         </View>

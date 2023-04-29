@@ -14,6 +14,7 @@ module.exports = {
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "react/prop-types": "off",
     "react-native/no-inline-styles": "off",
     "react-native/no-color-literals": "off",

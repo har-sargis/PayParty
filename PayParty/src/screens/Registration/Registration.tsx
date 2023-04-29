@@ -41,8 +41,8 @@ function RegistrationScreen({ navigation }: {navigation: any}) {
   useEffect(() => {
     try {
       (async function () {
-        const phonCode = await AsyncStorage.getItem(PHONE_N_KEY);
-        const phoneNumber = await AsyncStorage.getItem(PHONE_C_KEY);
+        const phoneNumber = await AsyncStorage.getItem(PHONE_N_KEY);
+        const phonCode = await AsyncStorage.getItem(PHONE_C_KEY);
         setPhoneCode(phonCode || '');
         setPhoneNumber(phoneNumber || '');
       }());

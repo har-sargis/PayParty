@@ -6,10 +6,11 @@ interface IProps {
   icon?: JSX.Element;
   title?: string;
   hideChevron?: boolean;
+  onPress?: () => void;
 }
 
-const RouteButton: React.FC<IProps> = ({ icon, title, hideChevron }) => (
-  <TouchableOpacity style={styles.wrapper}>
+const RouteButton: React.FC<IProps> = ({ icon, title, hideChevron, onPress }) => (
+  <TouchableOpacity style={styles.wrapper} onPress={onPress}>
     <View style={styles.textwrapper}>
       {icon}
       <Text style={[styles.text, icon && styles.icon]}>{title}</Text>

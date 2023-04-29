@@ -29,14 +29,19 @@ function VerifyCodeScreen({ navigation }: {navigation: any}) {
 
   const verifyCode = useCallback(async () => {
     try {
-      const code = await AsyncStorage.getItem(PHONE_N_KEY);
-      const number = await AsyncStorage.getItem(PHONE_C_KEY);
+      const number = await AsyncStorage.getItem(PHONE_N_KEY);
+      const phoneCode = await AsyncStorage.getItem(PHONE_C_KEY);
+      console.log({
+        phoneNumber: `+${phoneCode}${number}`,
+        code,
+      })
       const res: VerificationResponse = await Fetch.post(AUTH_VC, {
-        phoneNumber: `+${code}${number}`,
+        phoneNumber: `+${phoneCode}${number}`,
         code,
       });
+
       if (res.verified) {
-        navigation.navigate('SignUp');
+        navigation.navigate('Registration');
       }
     } catch (e) {
       console.log(e);

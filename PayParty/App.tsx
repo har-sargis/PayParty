@@ -9,21 +9,35 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import { AuthProvider } from '@store/AuthContext';
+
 import routes from './routes';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  Start: undefined;
+  Profile: undefined;
+  Congrats: undefined;
+  Settings: undefined;
+  ActionMenu: undefined;
+  Login: undefined;
+  Registration: undefined;
+  EnterToCode: undefined;
+  SendCodeToNumber: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
-    <AuthProvider>
-      <NavigationContainer>
+    <NavigationContainer>
+      <AuthProvider>
         <Stack.Navigator
           initialRouteName="Start"
         >
           {routes.map(route => (
             <Stack.Screen
               key={route.name}
-              name={route.name}
+              name={route.name as keyof RootStackParamList}
               component={route.screen}
               options={{
                 headerShown: false,
@@ -32,8 +46,8 @@ const App = () => {
             />
           ))}
         </Stack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+      </AuthProvider>
+    </NavigationContainer>
   );
 };
 

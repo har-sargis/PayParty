@@ -66,7 +66,7 @@ const Settings: React.FC<IProps> = ({ navigation }) => (
         </View>
       </View>
     </SafeAreaView>
-    <BottomBar onMenuPress={() => navigation.navigate('Menu')} />
+    <BottomBar onMenuPress={() => navigation.navigate('ActionMenu')} />
   </View>
 );
 

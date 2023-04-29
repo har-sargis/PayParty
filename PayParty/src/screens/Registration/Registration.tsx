@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Country } from 'react-native-country-picker-modal';
@@ -8,12 +8,14 @@ import CustomButton from '@components/Button';
 import CustomInput from '@components/Input';
 import PhoneNumberInput from '@components/PhoneNumberInput';
 import Fetch from '@services/Fetch';
+import { AuthContext } from '@store/AuthContext';
 
 function RegistrationScreen({ navigation }: {navigation: any}) {
+  const { login } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneCode, setPhoneCode] = useState('374');
-  const [password, setPassword] = useState('374');
+  const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
   const handleNameChange = (name: string) => {
@@ -51,14 +53,24 @@ function RegistrationScreen({ navigation }: {navigation: any}) {
 
   const handleRegister = async () => {
     try {
-      const res = await Fetch.post(AUTH_SIGNUP, {
+      console.log({
         name,
         phone: `+${phoneCode}${phoneNumber}`,
         email,
         password,
       });
+      console.log(AUTH_SIGNUP);
+      const res: { message: string, accessToken: string, id: string, refreshToken: string } = await Fetch.post(AUTH_SIGNUP, {
+        firstName: name,
+        phoneNumber: `+${phoneCode}${phoneNumber}`,
+        email,
+        password,
+      });
       console.log(res);
-      // navigation.navigate('Congrats');
+      if (res.accessToken) {
+        login(res.accessToken, res.refreshToken, res.id)
+        navigation.navigate('Congrats');
+      }
     } catch (e) {
       console.log(e);
     }
@@ -80,7 +92,7 @@ function RegistrationScreen({ navigation }: {navigation: any}) {
               handlePhoneChange={handlePhoneChange}
           />
             <CustomInput containerStyle={styles.input} placeholder="Email" value={email} onChangeText={handleEmailChange} />
-            <CustomInput containerStyle={styles.input} placeholder="Password" value={email} onChangeText={handlePasswordChange} />
+            <CustomInput containerStyle={styles.input} placeholder="Password" value={password} onChangeText={handlePasswordChange} secureTextEntry />
             <CustomButton onPress={handleRegister}>
             Confirm
           </CustomButton>

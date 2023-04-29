@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,16 +9,18 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Country } from 'react-native-country-picker-modal';
 
-import PhoneInput from '../../components/PhoneNumberInput';
-import Input from '../../components/Input';
-import CloseButton from '../../components/CloseButton';
-import Button from '../../components/Button';
-import Separator from '../../components/Separator';
-import Switch from '../../components/Switch';
-import { AUTH_LOGIN } from '../../config/constants';
-// import Fetch from '../../services/Fetch';
+import PhoneInput from '@components/PhoneNumberInput';
+import Input from '@components/Input';
+import CloseButton from '@components/CloseButton';
+import Button from '@components/Button';
+import Separator from '@components/Separator';
+import Switch from '@components/Switch';
+import { AUTH_LOGIN } from '@config/constants';
+import Fetch from '@services/Fetch';
+import { AuthContext } from '@store/AuthContext';
 
 function SendCodeToNumber({ navigation }: { navigation: any }) {
+  const { login } = useContext(AuthContext);
   const [saveInfo, setSaveInfo] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneCode, setPhoneCode] = useState('374');
@@ -27,16 +29,19 @@ function SendCodeToNumber({ navigation }: { navigation: any }) {
   const handleLogin = async () => {
     console.log(phoneNumber, phoneCode, password, AUTH_LOGIN);
     if (!phoneNumber || !password) return;
-    // navigation.navigate('Home');
-    // try {
-    //   const response = await Fetch.post(AUTH_LOGIN, {
-    //     phone: `${phoneCode}${phoneNumber}`,
-    //     password,
-    //   });
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response: { message: string, accessToken: string, id: string, refreshToken: string } = await Fetch.post(AUTH_LOGIN, {
+        phoneNumber: `+${phoneCode}${phoneNumber}`,
+        password,
+      });
+      if (response.accessToken) {
+        login(response.accessToken, response.refreshToken, response.id);
+        navigation.navigate('Home');
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCodeChange = (code: Country) => {

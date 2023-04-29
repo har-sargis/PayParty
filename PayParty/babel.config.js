@@ -12,6 +12,8 @@ module.exports = {
         '@utils': './src/utils',
         '@config': './src/config',
         '@services': './src/services',
+        '@hooke': './src/hooks',
+        '@store': './src/store',
         // Add more aliases as needed
       },
     },]

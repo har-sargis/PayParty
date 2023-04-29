@@ -19,6 +19,12 @@
       "@config/*": [
         "src/config/*"
       ],
+      "@store/*": [
+        "src/store/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
       // Add more aliases as needed
     },
     "typeRoots": [

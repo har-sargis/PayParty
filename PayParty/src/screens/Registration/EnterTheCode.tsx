@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Country } from 'react-native-country-picker-modal';
-
 import CloseButton from '../../components/CloseButton';
 import Keyboard from '../../components/CustomNumberKeyBoard';
 import Countdown from '../../components/CountDown';

@@ -16,8 +16,8 @@ export class RefreshToken extends Model {
   id!: string;
 
   @ForeignKey(() => User)
-  @Column(DataType.UUID)
-  userId!: string;
+  @Column(DataType.INTEGER)
+  userId!: number;
 
   @Column(DataType.TEXT)
   token!: string;

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { nanoid } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 
 import { RefreshToken } from '../../models/RefreshToken';
 
@@ -21,7 +21,7 @@ export async function storeRefreshToken(userId: number, refreshToken: string, ex
   const expiresAt = new Date(Date.now() + expiresIn * 1000);
 
   await RefreshToken.create({
-    id: nanoid(),
+    id: uuidv4(),
     userId: userId,
     token: refreshToken,
     expiresAt: expiresAt,
@@ -83,7 +83,7 @@ export async function updateRefreshToken(userId: number): Promise<string | null>
     }
 
     // Generate a new refresh token
-    const newRefreshToken = nanoid();
+    const newRefreshToken = uuidv4();
 
     // Update the existing refresh token's value and expiration date
     existingRefreshToken.token = newRefreshToken;
